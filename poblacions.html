@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <body>
+
+        <div id="container">
+            <select id="provincies">
+    
+            </select>
+        </div>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script>
+            (function() {
+            $.getJSON("http://localhost:8080/m4/poblacions/poblacions.php?provincies")
+                .done(function(data) {
+                    console.log(data);
+                    for(var i=0; i<data.length; i++) {
+                        $("#provincies").append(`<option onclick="getPoblacions(${i})">${data[i].nom}</option>`)
+                    }
+
+                $.getJSON(`http://localhost:8080/m4/poblacions/poblacions.php?codi=${data[]}`)
+
+                    function getPoblacions(x) {
+                        for(var i=0; i<) {
+
+                        }
+                    }
+                });
+            })();
+        </script>
+    </body>
+</html>
