@@ -2,13 +2,51 @@
 <html>
     <body>
 
+        <input id="textBusqueda" type="text" placeholder="Buscar poblacio..."><button id="buscar" onclick="searchPoblacio()">Buscar</button>
+
         <div id="container">
             <select id="provincies">
     
             </select>
+            <div id="poblacions">
+
+            </div>
         </div>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script>
+            function searchPoblacio() {
+                var text = $("#textBusqueda").val();
+                $.getJSON(`http://localhost:8080/m4/poblacions/poblacions.php?codi=${text.substring(0,2)}`)
+                        .done(function(data) {
+                            $("#poblacions").html("");
+                            
+                            var pattern = new RegExp(text, 'i');
+                            console.log(pattern);
+                            var codi_provincia = $("#provincies").val().substring(0,2);
+                            
+                            console.log(data)
+                            console.log(pattern.test(data[i].nom));
+                            
+                            for(var i=0; i<data.length; i++) {
+                                if(pattern.test(data[i].nom)) {
+                                    $("#poblacions").append(`<li>${data[i].nom}</li>`);
+                                    console.log(data[i].nom);
+                                } else {console.log("bruh");}
+                            }
+                        });
+                }
+
+            function getPoblacions(x, el) {
+                var text = el.textContent;
+                $("#poblacions").html("");
+                $.getJSON(`http://localhost:8080/m4/poblacions/poblacions.php?codi=${text.substring(0,2)}`)
+                    .done(function(poblacions) {
+                        for(var i=0; i<poblacions.length; i++) {
+                            $("#poblacions").append(`<li>${poblacions[i].nom}</li>`);
+                        }
+                    });
+            }
+
             (function() {
             $.getJSON("http://localhost:8080/m4/poblacions/poblacions.php?provincies")
                 .done(function(data) {
@@ -16,15 +54,7 @@
                     for(var i=0; i<data.length; i++) {
                         var codi = data[i].codi; 
                         var codiPadded = String(codi).padStart(2, "0"); 
-                        $("#provincies").append(`<option onclick="getPoblacions(${i})">${codiPadded}, ${data[i].nom}</option>`)
-                    }
-
-                    function getPoblacions(x) {
-                        var text = this.textContent;
-                        $.getJSON(`http://localhost:8080/m4/poblacions/poblacions.php?codi=${text.substring(0,1)}`)
-                        .done(function(poblacions) {
-                            console.log(poblacions.x);
-                        })
+                        $("#provincies").append(`<option onclick="getPoblacions(${i}, this)">${codiPadded}, ${data[i].nom}</option>`)
                     }
                 });
             })();
