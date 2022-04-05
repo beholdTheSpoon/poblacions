@@ -14,15 +14,17 @@
                 .done(function(data) {
                     console.log(data);
                     for(var i=0; i<data.length; i++) {
-                        $("#provincies").append(`<option onclick="getPoblacions(${i})">${data[i].nom}</option>`)
+                        var codi = data[i].codi; 
+                        var codiPadded = String(codi).padStart(2, "0"); 
+                        $("#provincies").append(`<option onclick="getPoblacions(${i})">${codiPadded}, ${data[i].nom}</option>`)
                     }
 
-                $.getJSON(`http://localhost:8080/m4/poblacions/poblacions.php?codi=${data[]}`)
-
                     function getPoblacions(x) {
-                        for(var i=0; i<) {
-
-                        }
+                        var text = this.textContent;
+                        $.getJSON(`http://localhost:8080/m4/poblacions/poblacions.php?codi=${text.substring(0,1)}`)
+                        .done(function(poblacions) {
+                            console.log(poblacions.x);
+                        })
                     }
                 });
             })();
