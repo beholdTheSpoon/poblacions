@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="poblacions.css">
+    </head>
     <body>
 
         <input id="textBusqueda" type="text" placeholder="Buscar poblacio..."><button id="buscar" onclick="searchPoblacio()">Buscar</button>
 
         <div id="container">
-            <select id="provincies">
+            <select id="provincies" onchange="getPoblacions()">
     
             </select>
             <div id="poblacions">
@@ -14,50 +17,50 @@
         </div>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script>
+            var input = document.getElementById("textBusqueda");
+            input.addEventListener("keyup", function(event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    document.getElementById("buscar").click();
+                }
+            });
+
             function searchPoblacio() {
+                var codi = $("#provincies option:selected").text().substring(0,2);
                 var text = $("#textBusqueda").val();
-                var codi = $("#provincies").textContent;
-                $.getJSON(`http://localhost:8080/m4/poblacions/poblacions.php?codi=${codi.substring(0,2)}`)
+                $.getJSON(`http://localhost:8080/m4/poblacions/poblacions.php?codi=${codi}`)
                         .done(function(data) {
                             $("#poblacions").html("");
-                            
                             var pattern = new RegExp(text, 'i');
-                            console.log(pattern);
-                            var codi_provincia = $("#provincies").val().substring(0,2);
-                            
-                            console.log(data)
-                            console.log(pattern.test(data[i].nom));
-                            
+                            var codi_provincia = $("#provincies").val().substring(0,2);  
                             for(var i=0; i<data.length; i++) {
                                 if(pattern.test(data[i].nom)) {
                                     $("#poblacions").append(`<li>${data[i].nom}</li>`);
-                                    console.log(data[i].nom);
-                                } else {console.log("bruh");}
+                                }
                             }
                         });
                 }
 
-            function getPoblacions(el) {
-                var text = el.textContent;
+            function getPoblacions() {
+                var codi = $("#provincies option:selected").text().substring(0,2);
                 $("#poblacions").html("");
-                $.getJSON(`http://localhost:8080/m4/poblacions/poblacions.php?codi=${text.substring(0,2)}`)
+                $.getJSON(`http://localhost:8080/m4/poblacions/poblacions.php?codi=${codi.substring(0,2)}`)
                     .done(function(poblacions) {
                         for(var i=0; i<poblacions.length; i++) {
                             $("#poblacions").append(`<li>${poblacions[i].nom}</li>`);
                         }
-                    });
+                });
             }
 
             (function() {
             $.getJSON("http://localhost:8080/m4/poblacions/poblacions.php?provincies")
                 .done(function(data) {
-                    console.log(data);
                     for(var i=0; i<data.length; i++) {
                         var codi = data[i].codi; 
                         var codiPadded = String(codi).padStart(2, "0"); 
                         $("#provincies").append(`<option onclick="getPoblacions(this)">${codiPadded}, ${data[i].nom}</option>`)
                     }
-                });
+                });      
             })();
         </script>
     </body>
