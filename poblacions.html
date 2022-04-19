@@ -16,7 +16,8 @@
         <script>
             function searchPoblacio() {
                 var text = $("#textBusqueda").val();
-                $.getJSON(`http://localhost:8080/m4/poblacions/poblacions.php?codi=${text.substring(0,2)}`)
+                var codi = $("#provincies").textContent;
+                $.getJSON(`http://localhost:8080/m4/poblacions/poblacions.php?codi=${codi.substring(0,2)}`)
                         .done(function(data) {
                             $("#poblacions").html("");
                             
@@ -36,7 +37,7 @@
                         });
                 }
 
-            function getPoblacions(x, el) {
+            function getPoblacions(el) {
                 var text = el.textContent;
                 $("#poblacions").html("");
                 $.getJSON(`http://localhost:8080/m4/poblacions/poblacions.php?codi=${text.substring(0,2)}`)
@@ -54,7 +55,7 @@
                     for(var i=0; i<data.length; i++) {
                         var codi = data[i].codi; 
                         var codiPadded = String(codi).padStart(2, "0"); 
-                        $("#provincies").append(`<option onclick="getPoblacions(${i}, this)">${codiPadded}, ${data[i].nom}</option>`)
+                        $("#provincies").append(`<option onclick="getPoblacions(this)">${codiPadded}, ${data[i].nom}</option>`)
                     }
                 });
             })();
