@@ -23,7 +23,7 @@
 	
 	if( isset($_GET['codi']) ){
 		$mysqli = new mysqli($host, $usuariBBDD, $contrasenya, $basededades);
-		$sql = "SELECT * FROM poblacions WHERE codiProvincia = " . $_GET['codi'];
+		$sql = "SELECT * FROM poblacions WHERE codiProvincia = ". $_GET['codi'];
 		if ( ! $result = $mysqli->query($sql) ) {
 			echo "No s'ha pogut realitzar la consulta";
 			echo mysqli_error();

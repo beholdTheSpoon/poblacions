@@ -2,11 +2,19 @@
     font-family: Calibri;
 }
 
-#input, #container {
-    margin: auto;
+#input {
+    width: 250px;
+}
+
+#input, #container, #poblacions {
+    margin: 0 auto;
     text-align: center;
 }
 
 #poblacions {
+    padding: 5px;
     list-style-type: none;
+    text-align: left;
+    width: 250px;
+    border: 1px solid black;
 }
