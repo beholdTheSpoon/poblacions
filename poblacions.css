@@ -6,3 +6,7 @@
     margin: auto;
     text-align: center;
 }
+
+#poblacions {
+    list-style-type: none;
+}
